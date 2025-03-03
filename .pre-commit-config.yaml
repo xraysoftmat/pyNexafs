@@ -17,7 +17,7 @@ repos:
 
 # Black - for standard code formatting
 -   repo: https://github.com/psf/black
-    rev: 24.10.0
+    rev: 25.1.0
     hooks:
     -   id: black
 
@@ -29,7 +29,7 @@ repos:
 
 # Python Semantic Release & commitizen - for automatic versioning
 -   repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.1.0
+    rev: v4.4.1
     hooks:
       - id: commitizen
         stages: [commit-msg]
