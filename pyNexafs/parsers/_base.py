@@ -146,7 +146,7 @@ class parser_meta(abc.ABCMeta):
 
     @staticmethod
     def __validate_assignments(
-        assignments: dict[str, str | list[str] | None]
+        assignments: dict[str, str | list[str] | None],
     ) -> dict[str, str | list[str] | None]:
         """
         Validation method for column assignments for a parser.

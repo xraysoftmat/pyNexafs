@@ -518,7 +518,7 @@ class MDAFileReader:
 
     @staticmethod
     def header_to_dataFrame(
-        header: tuple[float, int, int, list[int], int, int, int]
+        header: tuple[float, int, int, list[int], int, int, int],
     ) -> pd.DataFrame:
         (
             version,
