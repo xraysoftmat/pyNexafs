@@ -19,21 +19,21 @@ repos:
 
 # Black - for standard code formatting
 -   repo: https://github.com/psf/black
-    rev: 24.10.0
+    rev: 25.1.0
     hooks:
     -   id: black
         # extend-exclude: '^tests/test_data/.*$'
 
 # NumPyDoc - for docstring validation
 -   repo: https://github.com/numpy/numpydoc
-    rev: v1.8.0
+    rev: v1.9.0
     hooks:
       - id: numpydoc-validation
         exclude: '^test.*$'
 
 # Python Semantic Release & commitizen - for automatic versioning
 -   repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.1.0
+    rev: v4.8.3
     hooks:
       - id: commitizen
         stages: [commit-msg]
