@@ -1,5 +1,5 @@
-name: pyNexafs Tests (PyTest, Coveralls)
-run-name: ${{ github.actor }} - Tests (PyTest, Coveralls)
+name: Tests 🔧 (PyTest, Coveralls)
+run-name: ${{ github.actor }} - Tests 🔧 (PyTest, Coveralls)
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number }}-${{ github.event.ref }}-tests
@@ -9,7 +9,7 @@ on:
   push:
   pull_request:
     branches:
-      - main, dev
+      - main
 
 jobs:
   test:

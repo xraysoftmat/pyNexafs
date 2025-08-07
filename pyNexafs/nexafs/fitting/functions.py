@@ -2,7 +2,8 @@
 Implementations of typical NEXAFS specturm fitting functions.
 """
 
-import numpy as np, numpy.typing as npt
+import numpy as np
+import numpy.typing as npt
 import scipy.special as spec
 
 # -------------------------------------------------------------------

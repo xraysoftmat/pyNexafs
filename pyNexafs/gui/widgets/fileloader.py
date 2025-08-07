@@ -1,10 +1,9 @@
-from PyQt6 import QtWidgets, QtCore, QtGui
+from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import (
     QWidget,
     QLineEdit,
     QHBoxLayout,
     QVBoxLayout,
-    QLabel,
     QComboBox,
     QApplication,
     QLabel,
@@ -15,21 +14,17 @@ from PyQt6.QtWidgets import (
     QProgressBar,
     QPushButton,
 )
-from PyQt6.QtGui import QIcon
 
 # from PyQt6.QtWidgets import QScrollBar, QHeaderView, QMainWindow, QTableWidget, QFrame, QGridLayout, QSizeGrip
 from PyQt6.QtCore import (
     Qt,
     pyqtSignal,
-    QAbstractTableModel,
 )
 import sys
 from pyNexafs.parsers import parser_loaders, parser_base
 from typing import Type
-import overrides
 from pyNexafs.gui.widgets.io.dir_selection import directorySelector
 from pyNexafs.gui.widgets.io.fileviewer import (
-    directoryViewerTable,
     directoryViewerTableNew,
     SummaryParamSelectorDialog,
 )

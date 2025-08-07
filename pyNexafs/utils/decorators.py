@@ -68,7 +68,6 @@ if __name__ == "__main__":
     ### Some basic tests
     # 1. Test y property
     class A:
-
         @y_property
         def myprop(self):
             print("get")

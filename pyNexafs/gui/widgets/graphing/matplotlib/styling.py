@@ -1,5 +1,4 @@
 import sys
-import typing
 import numpy as np
 import matplotlib as mpl
 

@@ -1,5 +1,5 @@
-name: Linting (NumpyDoc & Black)
-run-name: ${{ github.actor }} - Linting (NumpyDoc & Black)
+name: Linting 📜 (NumpyDoc & Black)
+run-name: ${{ github.actor }} - Linting 📜 (NumpyDoc & Black)
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number }}-${{ github.event.ref }}-linting
@@ -9,7 +9,7 @@ on:
   push:
   pull_request:
     branches:
-      - main, dev
+      - main
 
 jobs:
   build:
@@ -32,7 +32,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install numpydoc black
+        pip install numpydoc black ruff
+
+    - name: Analysing the code with Ruff
+      run: |
+        ruff check
 
     - name: Analysing the code with black
       run: |

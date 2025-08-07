@@ -13,7 +13,6 @@ pynexafs.parsers.parser_base : Base class for synchrotron data parsers.
 from __future__ import annotations  # For type hinting within class definitions
 import numpy.typing as npt
 import numpy as np
-import matplotlib as mpl
 import matplotlib.figure
 import matplotlib.axes
 import matplotlib.pyplot as plt
@@ -21,11 +20,7 @@ import abc
 import warnings
 import overrides
 import datetime
-from scipy import optimize as sopt
-from enum import Enum
-from types import NoneType
-from typing import Type, TypeVar, TYPE_CHECKING, Self
-from pyNexafs.utils.decorators import y_property
+from typing import Type, TYPE_CHECKING, Self
 
 if TYPE_CHECKING:
     from ..parsers import parser_base
@@ -710,7 +705,7 @@ class scanBase(scanAbstract):
                     # label could be multiple labels, or a tuple of labels.
                     index = self.parser.label_index(label)
                     y_indices.append(index)
-                except (AttributeError, ValueError) as e:
+                except (AttributeError, ValueError):
                     warnings.warn(
                         f"Label {label} not found in parser object {self.parser}."
                     )

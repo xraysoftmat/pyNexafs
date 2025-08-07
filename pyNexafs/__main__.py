@@ -9,7 +9,8 @@ Allowed arguments:
 - If no arguments are provided, the GUI will open pointed at the user folder '~'.
 """
 
-import sys, os
+import sys
+import os
 
 if __name__ == "__main__":
     args = sys.argv[1:]  # Get command line arguments, excluding the script name

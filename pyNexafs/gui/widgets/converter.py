@@ -15,7 +15,6 @@ import matplotlib.pyplot as plt
 
 
 class save_directory_selector(directorySelector):
-
     edit_description = "Path to save QANT-compatible data to."
     dialog_caption = "Select Save Directory"
 

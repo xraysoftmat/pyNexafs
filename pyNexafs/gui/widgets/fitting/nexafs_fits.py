@@ -2,7 +2,6 @@
 Module to perform graphical NEXAFS fitting
 """
 
-from PyQt6 import QtWidgets, QtCore, QtGui
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel
 from pyNexafs.gui.widgets.graphing.matplotlib.graphs import FigureCanvas, NEXAFS_NavQT
 from pyNexafs.nexafs import scanBase
@@ -41,7 +40,8 @@ class globalFitter(QWidget):
 
 
 # Example
-import sys, os
+import sys
+import os
 from PyQt6.QtWidgets import QApplication
 from pyNexafs.parsers.au.aus_sync.MEX2 import MEX2_NEXAFS
 

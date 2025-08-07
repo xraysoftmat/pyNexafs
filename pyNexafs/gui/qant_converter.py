@@ -3,20 +3,11 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
     QApplication,
     QHBoxLayout,
-    QWidget,
     QSplitter,
 )
-from PyQt6.QtGui import QLinearGradient
-from PyQt6 import QtGui, QtWidgets, QtCore
-from pyNexafs.gui.widgets.graphing.matplotlib.graphs import FigureCanvas
+from PyQt6 import QtWidgets
 from pyNexafs.gui.widgets.fileloader import nexafsFileLoader
-from pyNexafs.gui.widgets.viewer import nexafsViewer
 from pyNexafs.gui.widgets.converter import nexafsConverterQANT
-from pyNexafs.gui.data_browser import browserWidget
-
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavTB
-import numpy as np
-import overrides
 
 
 class converterWidget(QtWidgets.QWidget):
@@ -43,14 +34,11 @@ class converterWidget(QtWidgets.QWidget):
         # Remove parsers other than MEX2 from the loader.
         self.loader.nexafs_parser_selector.blockSignals(True)
         for key in list(self.loader.nexafs_parser_selector.parsers.keys()):
-            if not (
-                key
-                in [
-                    "au MEX1:NEXAFS",
-                    "au MEX2:NEXAFS",
-                    "",  # Empty key is used for GUI init.
-                ]
-            ):
+            if key not in [
+                "au MEX1:NEXAFS",
+                "au MEX2:NEXAFS",
+                "",  # Empty key is used for GUI init.
+            ]:
                 self.loader.nexafs_parser_selector.parsers.pop(key)
         self.loader.nexafs_parser_selector.update_combo_list()
         self.loader.nexafs_parser_selector.blockSignals(False)

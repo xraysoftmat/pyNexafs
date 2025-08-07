@@ -37,7 +37,6 @@ class TestRelabelsDict:
         [("a", "1"), ("c", "2"), ("e", "3"), ("f", "4"), (("e", "f"), "5")],
     )
     def test_set(self, key, value):
-
         # Create the relabel dictionary.
         relabel_dict = parser_meta.relabels_dict(self.DummyParserRelabel.RELABELS)
         # Test setting
@@ -112,11 +111,15 @@ class TestSummaryParamList:
         # Create the summary parameters list.
         if err:
             with pytest.raises(err) as e:
-                summary_params = parser_meta.summary_param_list(elements, parent=self.ParserNoRelabels)  # type: ignore
+                summary_params = parser_meta.summary_param_list(
+                    elements, parent=self.ParserNoRelabels
+                )  # type: ignore
             if overlapping_param:
                 assert f"Summary Parameter `{overlapping_param}`" in str(e.value)
         else:
-            summary_params = parser_meta.summary_param_list(elements, parent=self.ParserNoRelabels)  # type: ignore
+            summary_params = parser_meta.summary_param_list(
+                elements, parent=self.ParserNoRelabels
+            )  # type: ignore
 
     @pytest.mark.parametrize(
         "elements, err, overlapping_param",
@@ -136,11 +139,15 @@ class TestSummaryParamList:
         # Create the summary parameters list.
         if err:
             with pytest.raises(err) as e:
-                summary_params = parser_meta.summary_param_list(elements, parent=self.ParserRelabels)  # type: ignore
+                summary_params = parser_meta.summary_param_list(
+                    elements, parent=self.ParserRelabels
+                )  # type: ignore
             if overlapping_param:
                 assert f"Summary Parameter `{overlapping_param}`" in str(e.value)
         else:
-            summary_params = parser_meta.summary_param_list(elements, parent=self.ParserRelabels)  # type: ignore
+            summary_params = parser_meta.summary_param_list(
+                elements, parent=self.ParserRelabels
+            )  # type: ignore
 
     @pytest.mark.parametrize(
         "elements, query, contains",
@@ -156,7 +163,9 @@ class TestSummaryParamList:
         """Tests the summary parameters list can be set and returns the correct value."""
 
         # Create the summary parameters list.
-        summary_params = parser_meta.summary_param_list(elements, parent=self.ParserNoRelabels)  # type: ignore
+        summary_params = parser_meta.summary_param_list(
+            elements, parent=self.ParserNoRelabels
+        )  # type: ignore
         # Test its access
         assert (query in summary_params) == contains
 
@@ -177,7 +186,9 @@ class TestSummaryParamList:
     def test_contains_relabelled(self, elements, query, relabelled_contains):
         """Tests the summary parameters list can be set and returns the correct value."""
         # Create the summary parameters list.
-        summary_params = parser_meta.summary_param_list(elements, parent=self.ParserRelabels)  # type: ignore
+        summary_params = parser_meta.summary_param_list(
+            elements, parent=self.ParserRelabels
+        )  # type: ignore
         # Test its access
         assert (query in summary_params) == relabelled_contains
 
@@ -195,7 +206,9 @@ class TestSummaryParamList:
     def test_index_tuples(self, elements, query, index_or_exception):
         """Tests the summary parameters list can be indexed, and tuples behave as individual elements also."""
         # Create the summary parameters list.
-        summary_params = parser_meta.summary_param_list(elements, parent=self.ParserNoRelabels)  # type: ignore
+        summary_params = parser_meta.summary_param_list(
+            elements, parent=self.ParserNoRelabels
+        )  # type: ignore
         # Test its access
         if isinstance(index_or_exception, type) and issubclass(
             index_or_exception, Exception
@@ -226,7 +239,9 @@ class TestSummaryParamList:
     def test_index_relabelled(self, elements, query, index_or_exception):
         """Tests the summary parameters list can be indexed, tuples behave as individual elements and relabels apply."""
         # Create the summary parameters list.
-        summary_params = parser_meta.summary_param_list(elements, parent=self.ParserRelabels)  # type: ignore
+        summary_params = parser_meta.summary_param_list(
+            elements, parent=self.ParserRelabels
+        )  # type: ignore
         # Test its access
         if isinstance(index_or_exception, type) and issubclass(
             index_or_exception, Exception
@@ -305,12 +320,18 @@ class TestParamDict:
         """
 
         # Create the parameter dictionary.
-        param_dict = parser_base.param_dict(map=self.DummyLoadedParserNoRelabel.params, parent=self.DummyLoadedParserNoRelabel)  # type: ignore
+        param_dict = parser_base.param_dict(
+            map=self.DummyLoadedParserNoRelabel.params,
+            parent=self.DummyLoadedParserNoRelabel,
+        )  # type: ignore
         # Test its access
         assert (param_dict.__contains__(key)) == contains, "Contains failed."
 
         # Create the parameter dictionary.
-        param_dict = parser_base.param_dict(map=self.DummyLoadedParserRelabel.params, parent=self.DummyLoadedParserRelabel)  # type: ignore
+        param_dict = parser_base.param_dict(
+            map=self.DummyLoadedParserRelabel.params,
+            parent=self.DummyLoadedParserRelabel,
+        )  # type: ignore
         # Test its access
         assert (
             param_dict.__contains__(key)
@@ -336,7 +357,10 @@ class TestParamDict:
         """Tests the values returned by the parameter dictionary."""
 
         # Create the parameter dictionary.
-        param_dict = parser_base.param_dict(parent=self.DummyLoadedParserNoRelabel, map=self.DummyLoadedParserNoRelabel.params)  # type: ignore
+        param_dict = parser_base.param_dict(
+            parent=self.DummyLoadedParserNoRelabel,
+            map=self.DummyLoadedParserNoRelabel.params,
+        )  # type: ignore
         # Test its access
         if isinstance(value_or_exception, type) and issubclass(
             value_or_exception, Exception
@@ -347,7 +371,10 @@ class TestParamDict:
             assert param_dict[key] == value_or_exception
 
         # Test the relabelled value
-        param_dict = parser_base.param_dict(parent=self.DummyLoadedParserRelabel, map=self.DummyLoadedParserRelabel.params)  # type: ignore
+        param_dict = parser_base.param_dict(
+            parent=self.DummyLoadedParserRelabel,
+            map=self.DummyLoadedParserRelabel.params,
+        )  # type: ignore
         if isinstance(value_or_exception_relabelled, type) and issubclass(
             value_or_exception_relabelled, Exception
         ):

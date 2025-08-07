@@ -25,7 +25,6 @@ try:
     from pyNexafs.gui.widgets.reducer import EnergyBinReducerDialog
 except ImportError:
     has_PYQT = False
-import overrides
 from numpy.typing import NDArray
 import numpy as np
 
@@ -138,7 +137,6 @@ class MEX2_NEXAFS_META(parser_meta):
         namespace: dict[str, Any],
         **kwds: Any,
     ) -> None:
-
         # Add extra class property for MEX2 mda data, to track binning settings
         cls.reduction_bin_domain: list[tuple[int, int]] | None = None
         """Tracker for the binning settings used in the most recent data reduction."""
@@ -510,7 +508,8 @@ class MEX2_NEXAFS(parser_base, metaclass=MEX2_NEXAFS_META):
 
                 # Use the binning settings to reduce the data.
                 _, reduced_summed_data = red.reduce_by_sum(
-                    bin_domain=cls.reduction_bin_domain, axis=None  # all axes
+                    bin_domain=cls.reduction_bin_domain,
+                    axis=None,  # all axes
                 )
                 _, reduced_single_detector_data = red.reduce_by_sum(
                     bin_domain=cls.reduction_bin_domain,
@@ -717,7 +716,8 @@ class MEX2_NEXAFS(parser_base, metaclass=MEX2_NEXAFS_META):
 
                 # Use the binning settings to reduce the data.
                 _, reduced_summed_data = red.reduce_by_sum(
-                    bin_domain=cls.reduction_bin_domain, axis=None  # all axes
+                    bin_domain=cls.reduction_bin_domain,
+                    axis=None,  # all axes
                 )
                 _, reduced_single_detector_data = red.reduce_by_sum(
                     bin_domain=cls.reduction_bin_domain,
@@ -885,7 +885,7 @@ def MEX2_to_QANT_AUMainAsc(
     )
     for key, value in extrainfo_mapping.items():
         if value is not None:
-            if not value in parser.params:
+            if value not in parser.params:
                 raise ValueError(f"Parameter {value} not found in parser params.")
             elif key not in possible_read_values:
                 raise ValueError(f"Parameter {key} not found in possible read values.")
@@ -969,7 +969,7 @@ def MEX2_to_QANT_AUMainAsc(
             line = f"# Extra PV {param_idx}: {wparam}"
             if (
                 hasattr(parser.params[param], "__len__")
-                and not type(parser.params[param]) is str
+                and type(parser.params[param]) is not str
             ):
                 for val in parser.params[param]:
                     wval = (
@@ -996,7 +996,7 @@ def MEX2_to_QANT_AUMainAsc(
         else f"# Points completed = {parser.params['Points completed']}\n"
     )
     ostrs.append(
-        f"# Scanner = SR14ID01NEXSCAN:scan1\n"
+        "# Scanner = SR14ID01NEXSCAN:scan1\n"
         if "Scanner" not in parser.params
         else f"# Scanner = {parser.params['Scanner']}\n"
     )
@@ -1024,7 +1024,6 @@ def MEX2_to_QANT_AUMainAsc(
     if "column_types" in parser.params and isinstance(
         parser.params["column_types"], dict
     ):
-
         for coltype in parser.params["column_types"].keys():
             line = f"#  {coltype}:"
             for val in parser.params["column_types"][coltype]:
@@ -1055,8 +1054,8 @@ def MEX2_to_QANT_AUMainAsc(
             if "column_type_assignments" in parser.params:
                 col_type = parser.params["column_type_assignments"][i]
             else:
-                col_type = f"1-D Detector{i+1:4}"  # Nth detector
-            line = f"#{i+init_idx+1:5}  [" + col_type + "]  "
+                col_type = f"1-D Detector{i + 1:4}"  # Nth detector
+            line = f"#{i + init_idx + 1:5}  [" + col_type + "]  "
             for val in col:
                 line += f"{val}" if val is not None else ""
                 if val != col[-1]:
@@ -1068,7 +1067,7 @@ def MEX2_to_QANT_AUMainAsc(
         # Create column descriptions from units and labels.
         ostrs.append(f"#{1:5}  [     Index      ]\n")
         for i, label in enumerate(parser.labels):
-            line = f"#{i+2:5}  "
+            line = f"#{i + 2:5}  "
             if i == 0:
                 # Assume energy labels...
                 line += f"[1-D Positioner 1]  {label}, "
@@ -1091,7 +1090,7 @@ def MEX2_to_QANT_AUMainAsc(
     # Define the Scan Values
     ostrs.append("# 1-D Scan Values\n")
     for i, row in enumerate(parser.data):
-        line = f"{i+1}"
+        line = f"{i + 1}"
         for val in row:
             line += f"\t{val}"
         line = line[:-1] + "\n"

@@ -13,7 +13,6 @@ from PyQt6.QtWidgets import (
     QProgressBar,
     QApplication,
     QStyle,
-    QVBoxLayout,
     QTableWidget,
     QTableWidgetItem,
 )
@@ -23,14 +22,12 @@ from PyQt6.QtCore import (
     QSortFilterProxyModel,
     QRegularExpression,
     QAbstractTableModel,
-    QModelIndex,
     QThreadPool,
     QThread,
-    QObject,
 )
 import os
-from pyNexafs.parsers import parser_loaders, parser_base
-from typing import Any, Unpack
+from pyNexafs.parsers import parser_base
+from typing import Any
 import warnings
 import numpy as np
 from datetime import datetime as dt
@@ -230,7 +227,8 @@ class directoryViewerTable(QTableView):
         # Setup default header columns if parser is defined. Use header/index definition in table_model.
         self.__default_parsed_headers_list = self.__default_headers_list.copy()
         self.__default_parsed_headers_list.insert(
-            self._status_index(), self._status_header()  # At 1st index, insert ""
+            self._status_index(),
+            self._status_header(),  # At 1st index, insert ""
         )
 
     @classmethod
@@ -511,7 +509,7 @@ class directoryViewerTable(QTableView):
                 try:
                     # Attempt to use 'summary_param_names_with_units' if available.
                     obj_head = val.summary_param_names_with_units
-                except NotImplementedError as e:
+                except NotImplementedError:
                     warnings.warn(
                         f"{self.parser.__name__} has not implemented 'summary_param_names_with_units'. Defaulting to 'summary_param_names'."
                     )
@@ -594,7 +592,7 @@ class directoryViewerTable(QTableView):
                                 os.path.join(self.directory, file), header_only=True
                             )
                         # Catch unimplemented and import errors.
-                        except (NotImplementedError, ImportError, PermissionError) as e:
+                        except (NotImplementedError, ImportError, PermissionError):
                             self._parser_headers[file] = None
                     if self.progress_bar is not None:
                         # self.progress_bar.setValue(int((i + 1) / files_len * 100))
@@ -1212,7 +1210,7 @@ class directoryViewerTableNew(QTableView):
                         self._parser_headers[file] = self.parser(
                             os.path.join(self.directory, file), header_only=True
                         )
-                    except (NotImplementedError, ImportError, PermissionError) as e:
+                    except (NotImplementedError, ImportError, PermissionError):
                         self._parser_headers[file] = None
                 if self.progress_bar is not None:
                     # self.progress_bar.setValue(int((i + 1) / files_len * 100))
@@ -1412,7 +1410,7 @@ class directoryViewerTableNew(QTableView):
                 try:
                     # Attempt to use 'summary_param_names_with_units' if available.
                     obj_head = val.summary_param_names_with_units
-                except NotImplementedError as e:
+                except NotImplementedError:
                     warnings.warn(
                         f"{self.parser.__name__} has not implemented 'summary_param_names_with_units'. Defaulting to 'summary_param_names'."
                     )
@@ -1794,7 +1792,6 @@ class SummaryParamSelector(QTableWidget):
         parent: QWidget | None = None,
         existing_selection: list[str] | None = None,
     ):
-
         # Init the table
         super().__init__(parent)
 
@@ -1892,7 +1889,7 @@ class SummaryParamSelector(QTableWidget):
         params = set()
         for parser in self.parsers:
             for p in parser.params.keys():
-                if not p in params:
+                if p not in params:
                     params.add(p)
         return params
 
@@ -1907,7 +1904,7 @@ class SummaryParamSelector(QTableWidget):
         """
         cls_list: set[type[parser_base]] = set()
         for p in self._parsers:
-            if not p.__class__ in cls_list:
+            if p.__class__ not in cls_list:
                 cls_list.add(p.__class__)
         return cls_list
 
@@ -2202,7 +2199,7 @@ class SummaryParamSelectorDialog(QtWidgets.QDialog):
 
 
 # Example
-import sys, os
+import sys
 from pyNexafs.parsers.au.aus_sync.MEX2 import MEX2_NEXAFS
 
 if __name__ == "__main__":

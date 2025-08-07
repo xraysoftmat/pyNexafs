@@ -5,13 +5,14 @@ from PyQt6.QtWidgets import (
     QListWidget,
     QSplitter,
 )
-from PyQt6 import QtCore, QtWidgets, QtGui
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication, QLabel
+from PyQt6.QtWidgets import QApplication
 import sys
-import matplotlib, matplotlib.axes, matplotlib.figure
+import matplotlib
+import matplotlib.axes
+import matplotlib.figure
 
-from pyNexafs.nexafs.scan import scanAbstract, scanBase
+from pyNexafs.nexafs.scan import scanAbstract
 from pyNexafs.parsers import parser_base
 from pyNexafs.gui.widgets.graphing.matplotlib.graphs import FigureCanvas, NavTBQT
 
@@ -422,7 +423,6 @@ class normalisingGraph(QWidget):
                 # Then iterate over each scan | parser object.
                 for scan in scans:
                     try:
-
                         if isinstance(scan, scanAbstract):
                             ind = scan.y_labels.index(ds)
                             x = scan.x

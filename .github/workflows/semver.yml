@@ -3,6 +3,12 @@
 # [2] https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
 
 name: Python 🐍 Semantic Versioning
+run-name: ${{ github.actor }} - Python 🐍 Semantic Versioning
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number }}-${{ github.ref_name }}-release
+  cancel-in-progress: false
+
 on:
   workflow_dispatch:
     inputs:
@@ -11,6 +17,15 @@ on:
         required: true
         type: boolean
         default: true
+      prerelease_token:
+        description: 'Token for prerelease'
+        required: false
+        type: choice
+        options:
+          - alpha
+          - beta
+          - rc
+        default: 'beta'
   push:
 
 permissions:
@@ -24,9 +39,6 @@ jobs:
     # defaults: # https://github.com/actions/upload-artifact/issues/232#issuecomment-1065422577
     #   run:
     #     working-directory: ./pyNexafs
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.event.number }}-${{ github.ref_name }}-release
-      cancel-in-progress: false
     permissions:
       contents: write
     outputs:
@@ -38,11 +50,13 @@ jobs:
         if: ${{ github.event == 'workflow_dispatch' }}
         run: |
           echo "prerelease=${{ github.event.inputs.prerelease }}" >> $GITHUB_ENV
+          echo "prerelease_token=${{ github.event.inputs.prerelease_token }}" >> $GITHUB_ENV
       - name: Set default value for pre-release
         shell: bash
         if: ${{ github.event != 'workflow_dispatch' }}
         run: |
           echo "prerelease=true" >> $GITHUB_ENV
+          echo "prerelease_token=beta" >> $GITHUB_ENV
       - name: Display pre-release input
         shell: bash
         run: |
@@ -118,6 +132,7 @@ jobs:
           git_committer_email: "actions@users.noreply.github.com"
           build: true
           prerelease: ${{ env.prerelease == 'true' }}
+          prerelease_token: ${{ env.prerelease_token }}
           changelog: true
           verbosity: 2
           no_operation_mode: ${{ github.repository_owner != 'xraysoftmat'}}
@@ -130,11 +145,21 @@ jobs:
           echo "Released: ${{ steps.release.outputs.released }}"
           echo "Branch: ${{ github.ref }}; ${{ github.ref == 'refs/heads/main' }}"
           echo "released=${{ steps.release.outcome && github.ref == 'refs/heads/main' && steps.release.outputs.released && github.repository_owner == 'xraysoftmat' && steps.release.outcome == 'success' }}" >> "$GITHUB_OUTPUT"
-          
+
+      - name: Display | Release Information
+        if: |
+          success() && steps.is_released.outputs.released
+        run: |
+          echo "Process Release: ${{ steps.is_released.outputs.released }}"
+          echo "Release Tag: ${{ steps.release.outputs.tag }}"
+          echo "Release Version: ${{ steps.release.outputs.version }}"
+          echo "Release Branch: ${{ github.ref_name }}"
+          echo "Release Prerelease: ${{ env.prerelease }}"
+
       - name: Publish | Upload to GitHub Release Assets
         uses: python-semantic-release/publish-action@v10.2.0
         if: |
-          success() && steps.is_released.outputs.released
+          success() && steps.is_released.outputs.released == 'true'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.release.outputs.tag }}
@@ -142,7 +167,7 @@ jobs:
       - name: Upload | Distribution Artifacts
         uses: actions/upload-artifact@v4
         if: |
-          success() && steps.is_released.outputs.released
+          success() && steps.is_released.outputs.released == 'true'
         with:
           name: distribution-artifacts
           path: ./dist
@@ -152,7 +177,7 @@ jobs:
       - name: Publish | Upload to GitHub Release Assets
         uses: python-semantic-release/publish-action@v10.2.0
         if: |
-          success() && steps.is_released.outputs.released
+          success() && steps.is_released.outputs.released == 'true'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.release.outputs.tag }}
@@ -166,7 +191,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: semver-release # match the job name above
     if: |
-      success() && needs.semver-release.outputs.released
+      success() && needs.semver-release.outputs.released == 'true'
     defaults:
       run:
         working-directory: ./pyNexafs
@@ -192,31 +217,33 @@ jobs:
         with:
           packages-dir: pyNexafs/dist
 
-  testpypi-deploy:
-    name: Publish Python 🐍 distribution 📦 to TestPyPI
-    runs-on: ubuntu-latest
-    # Only run this job on the master account,  only publish to TestPyPI on tag pushes
-    needs: semver-release # match the job name above
-    if: |
-      success() && needs.semver-release.outputs.released
-    environment:
-      name: testpypi
-      url: https://test.pypi.org/p/pyNexafs
 
-    permissions:
-      contents: read
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
+  ### Not currently using TestPyPI, but can be enabled if needed.
+  # testpypi-deploy:
+  #   name: Publish Python 🐍 distribution 📦 to TestPyPI
+  #   runs-on: ubuntu-latest
+  #   # Only run this job on the master account,  only publish to TestPyPI on tag pushes
+  #   needs: semver-release # match the job name above
+  #   if: |
+  #     success() && needs.semver-release.outputs.released == 'true'
+  #   environment:
+  #     name: testpypi
+  #     url: https://test.pypi.org/p/pyNexafs
 
-    steps:
-      - name: Setup | Download Build Artifacts
-        uses: actions/download-artifact@v4
-        id: artifact-download
-        with:
-          name: distribution-artifacts # Match the name used in the upload step
-          path: pyNexafs/dist # Match the path used in the upload step
+  #   permissions:
+  #     contents: read
+  #     id-token: write  # IMPORTANT: mandatory for trusted publishing
 
-      - name: Publish distribution 📦 to TestPyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
-          packages-dir: pyNexafs/dist
+  #   steps:
+  #     - name: Setup | Download Build Artifacts
+  #       uses: actions/download-artifact@v4
+  #       id: artifact-download
+  #       with:
+  #         name: distribution-artifacts # Match the name used in the upload step
+  #         path: pyNexafs/dist # Match the path used in the upload step
+
+  #     - name: Publish distribution 📦 to TestPyPI
+  #       uses: pypa/gh-action-pypi-publish@release/v1
+  #       with:
+  #         repository-url: https://test.pypi.org/legacy/
+  #         packages-dir: pyNexafs/dist

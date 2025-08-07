@@ -3,7 +3,7 @@
 import pytest
 import os
 import numpy as np
-from pyNexafs.parsers.au.aus_sync.MEX2 import MEX2_NEXAFS_META, MEX2_NEXAFS
+from pyNexafs.parsers.au.aus_sync.MEX2 import MEX2_NEXAFS
 
 # Relative directories for the test data.
 LOCAL_DIR = "tests/test_data/au/MEX2/"
@@ -25,7 +25,7 @@ class TestMEX2:
             [
                 (
                     os.path.join(PATH_202403, file)
-                    if not "5641" in file
+                    if "5641" not in file
                     else pytest.param(
                         os.path.join(PATH_202403, file), marks=pytest.mark.xfail
                     )
@@ -65,7 +65,7 @@ class TestMEX2:
             [
                 (
                     os.path.join(PATH_202503, file)
-                    if not "3366" in file
+                    if "3366" not in file
                     else pytest.param(
                         os.path.join(PATH_202503, file), marks=pytest.mark.xfail
                     )

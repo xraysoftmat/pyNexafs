@@ -1,32 +1,16 @@
 import sys
 
-from PyQt6 import QtWidgets, QtCore, QtGui
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
     QApplication,
-    QLabel,
-    QMainWindow,
-    QTextEdit,
     QHBoxLayout,
     QWidget,
-    QListView,
-    QVBoxLayout,
-    QListWidget,
     QSplitter,
-    QSplitterHandle,
-    QAbstractItemView,
 )
-from PyQt6.QtGui import QColor, QPalette, QLinearGradient
 
-import matplotlib.figure
 
-from pyNexafs.gui.widgets.graphing.matplotlib.graphs import FigureCanvas
 from pyNexafs.gui.widgets.fileloader import nexafsFileLoader
 from pyNexafs.gui.widgets.viewer import nexafsViewer
-from pyNexafs.nexafs.scan import scanBase
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavTB
-
-import numpy as np
 
 
 class browserWidget(QWidget):
@@ -97,7 +81,6 @@ class browserWidget(QWidget):
 
 
 def gui(directory: str | None = None):
-
     app = QApplication(sys.argv)
     window = browserWidget(init_dir=directory)
     window.show()

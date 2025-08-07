@@ -2,10 +2,7 @@ from PyQt6 import QtCore, QtWebEngineWidgets, QtWidgets
 from PyQt6.QtWidgets import QApplication
 import sys
 
-import plotly as ply
 import plotly.express as px
-
-from pyNexafs.parsers.au.aus_sync import SXR_NEXAFS
 
 
 class PlotlyGraph(QtWidgets.QWidget):

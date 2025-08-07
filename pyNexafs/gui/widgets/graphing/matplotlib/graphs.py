@@ -1,15 +1,16 @@
-import os, sys
-import matplotlib.figure, matplotlib.axes
+import os
+import sys
+import matplotlib.figure
+import matplotlib.axes
 import matplotlib.pyplot as plt
 import overrides
 import numpy as np
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.backend_bases import NavigationToolbar2 as NavTB
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavTBQT
-from matplotlib.backends.qt_compat import _to_int, __version__
+from matplotlib.backends.qt_compat import _to_int
 from PyQt6 import QtGui, QtWidgets, QtCore
 from PyQt6.QtWidgets import QStyle
-from PyQt6.QtCore import pyqtSignal, pyqtBoundSignal
 
 
 class FigureCanvas(FigureCanvasQTAgg):
@@ -18,7 +19,6 @@ class FigureCanvas(FigureCanvasQTAgg):
 
 
 class NEXAFS_NavQT(NavTBQT, QtWidgets.QToolBar):
-
     toolitems = [*NavTBQT.toolitems]
 
     ## Example extension to add custom functions.

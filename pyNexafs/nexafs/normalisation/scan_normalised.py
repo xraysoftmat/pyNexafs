@@ -6,16 +6,13 @@ import warnings
 import overrides
 import datetime
 from scipy import optimize as sopt
-from enum import Enum
 from types import NoneType
-from typing import Type, Self, overload, Literal
+from typing import Self, overload, Literal
 from pyNexafs.nexafs.scan import scanBase, scanAbstract
 from pyNexafs.nexafs.normalisation.norm_settings import (
     normMethod,
     configBase,
-    configSeries,
     configChannel,
-    configExternalChannel,
     normConfigEdges,
 )
 
@@ -1161,7 +1158,6 @@ class scanNormEdges(scanAbstractNorm):
             self.pre_edge_norm_method is not normConfigEdges.PREEDGE_NORM_TYPE.NONE
             and self.pre_edge_domain is not None
         ):
-
             # Collect pre-edge indexes
             if isinstance(self.pre_edge_domain, list):
                 # Use the list of indexes
@@ -1245,7 +1241,6 @@ class scanNormEdges(scanAbstractNorm):
             self.post_edge_norm_method is not normConfigEdges.POSTEDGE_NORM_TYPE.NONE
             and self.post_edge_domain is not None
         ):
-
             # Collect post-edge indexes:
             if isinstance(self.post_edge_domain, list):
                 post_inds = self.post_edge_domain

@@ -7,11 +7,7 @@ In
 from enum import Enum, EnumType
 from abc import ABC, abstractmethod, ABCMeta
 from io import TextIOWrapper
-from typing import Self
-import numpy.typing as npt
-from numpy.typing import ArrayLike
 import yaml
-import numpy as np
 import os
 
 
@@ -70,7 +66,7 @@ class configMeta(ABCMeta):
                 args = args[: args.index("args")]
             if len(args) != len(defs):
                 raise NotImplementedError(
-                    f"Class {name} must have default arguments for __init__ variables {init_fn.__code__.co_varnames[:-(len(init_fn.__code__.co_varnames - 1 - len(init_fn.__defaults__)))]}"
+                    f"Class {name} must have default arguments for __init__ variables {init_fn.__code__.co_varnames[: -(len(init_fn.__code__.co_varnames - 1 - len(init_fn.__defaults__)))]}"
                 )
         return super().__new__(cls, name, bases, dct)
 
@@ -451,7 +447,6 @@ class configChannel(configBase):
         channel_name: str | None = None,
         apply_to: list[str] | None = None,
     ) -> None:
-
         # Initialise the normConfig class
         super().__init__(apply_to)
 

@@ -1,7 +1,8 @@
-## `Pre-commit` module configuration file
-## Can be installed using `pip install pre-commit`
-## The pre-commit hooks can then be installed using `pre-commit install`
-## All checks are run by default when `git commit` is run.
+### `Pre-commit` module configuration file
+# Can be installed using `pip install pre-commit`
+# The pre-commit hooks can then be installed using:
+# >>> pre-commit install --hook-type pre-commit --hook-type commit-msg --hook-type pre-push
+# All checks are run by default when `git <action>` is run for the given hook, i.e. commit.
 
 repos:
 # Pre-commit hooks for basic Python processing
@@ -16,6 +17,17 @@ repos:
     -   id: mixed-line-ending
     -   id: trailing-whitespace
         exclude: '^tests/test_data/.*$'
+
+# Ruff - for linting and formatting
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  # Ruff version.
+  rev: v0.12.7
+  hooks:
+    # Run the linter.
+    - id: ruff-check
+      args: [ --fix ]
+    # Run the formatter.
+    - id: ruff-format
 
 # Black - for standard code formatting
 -   repo: https://github.com/psf/black
@@ -32,31 +44,24 @@ repos:
         exclude: '^test.*$'
 
 # Python Semantic Release & commitizen - for automatic versioning
+# NOTE: The `pre-commit install` has a default hook-type of [pre-commit], but not [pre-push] or [commit-msg].
+# To install these hooks, you also need to run
+# >>> pre-commit install --hook-type pre-commit --hook-type commit-msg --hook-type pre-push
 -   repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.1.0
+    rev: v4.8.3
     hooks:
       - id: commitizen
         stages: [commit-msg]
       - id: commitizen-branch
         stages: [pre-push]
 
-# # Use "pre-commit install --hook-type commit-msg" to install, pre-commit install doesn't work.
-# -   repo: https://github.com/opensource-nepal/commitlint
-#     rev: v1.3.0
-#     hooks:
-#       - id: commitlint
-#         stages: [commit-msg]
-#         # args: [--config-path, .github/commitlint.yml]
-#         additional_dependencies:
-#           - commitlint
-#           - commitizen
-
-# repos:
-# - repo: https://github.com/astral-sh/ruff-pre-commit
-#   # Ruff version.
-#   rev: v0.11.12
-#   hooks:
-#     # Run the linter.
-#     - id: ruff-check
-#     # Run the formatter.
-#     - id: ruff-format
+# Use "pre-commit install --hook-type commit-msg" to install, pre-commit install doesn't work.
+-   repo: https://github.com/opensource-nepal/commitlint
+    rev: v1.3.0
+    hooks:
+      - id: commitlint
+        stages: [commit-msg]
+        # args: [--config-path, .github/commitlint.yml]
+        additional_dependencies:
+          - commitlint
+          - commitizen

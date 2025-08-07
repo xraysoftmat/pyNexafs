@@ -7,12 +7,10 @@ each with 4096 energy bins (channels), all of which is recorded as the beam ener
 
 import numpy as np
 import numpy.typing as npt
-import typing
 import os
-import warnings
 from pyNexafs.utils.mda import MDAFileReader
-import matplotlib.pyplot as plt, matplotlib as mpl
-from typing import Callable, Literal, Union
+import matplotlib.pyplot as plt
+from typing import Callable, Literal
 
 
 class reducer:

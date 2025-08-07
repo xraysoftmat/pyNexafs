@@ -23,18 +23,17 @@ The following methods are also optional to implement, and will otherwise return 
 - `summary_param_names_with_units`
 """
 
-from sys import maxsize
-import numpy as np, numpy.typing as npt
-import matplotlib.pyplot as plt
+import numpy.typing as npt
 import abc
-import sys, os
+import sys
+import os
 import types
 import warnings
 from io import TextIOWrapper
 import typing
-from typing import Any, Type, Self, Callable, Iterable, Any, TypedDict
+from typing import Type, Self, Callable, Iterable, Any, TypedDict
 from _collections_abc import dict_items, dict_keys
-from collections.abc import KeysView, ValuesView, ItemsView
+from collections.abc import KeysView, ItemsView
 
 if typing.TYPE_CHECKING:
     from _typeshed import SupportsKeysAndGetItem
@@ -765,7 +764,7 @@ class parser_meta(abc.ABCMeta):
             'x_errs' assignment is not a string or None.
         """
         # X
-        if not "x" in assignments:
+        if "x" not in assignments:
             raise ValueError("'x' assignment not found in assignments.")
         x = assignments["x"]
         if not (isinstance(x, str) or isinstance(x, tuple)):
@@ -774,7 +773,7 @@ class parser_meta(abc.ABCMeta):
             )
 
         # Y
-        if not "y" in assignments:
+        if "y" not in assignments:
             raise ValueError("'y' assignment not found in assignments.")
         y = assignments["y"]
         if not isinstance(y, (tuple, str, list)):
@@ -1753,7 +1752,7 @@ class parser_base(abc.ABC, metaclass=parser_meta):
             for pfn, err in parse_errs.items():
                 print(f"Method '{pfn.__name__}' failed with {repr(err)}.")
             print(
-                f"-------------------------------------------------------------------------------------"
+                "-------------------------------------------------------------------------------------"
             )
 
             # If no parse functions successfully import the file type,
@@ -2118,7 +2117,7 @@ class parser_base(abc.ABC, metaclass=parser_meta):
             ve: ValueError
             try:
                 return self._labels.index(query)  # throws value error if not found.
-            except ValueError as ve:
+            except ValueError:
                 pass
 
             # Also check relabel if search_relabel is True.
@@ -2129,7 +2128,7 @@ class parser_base(abc.ABC, metaclass=parser_meta):
                         return self._labels.index(
                             self.RELABELS[query]
                         )  # throws value error if not found
-                    except ValueError as e:
+                    except ValueError:
                         pass
 
                 # Search values instead to reverse for key

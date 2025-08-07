@@ -6,7 +6,6 @@ from matplotlib.backend_bases import MouseButton
 from matplotlib.widgets import SpanSelector, ToolLineHandles
 from matplotlib.patches import Rectangle
 from matplotlib.colors import Colormap
-from matplotlib.backend_bases import Event as mplEvent
 import numpy as np
 import numpy.typing as npt
 from typing import Any, Collection, Literal, Callable
@@ -1046,7 +1045,6 @@ class NSpanSelector(SpanSelector):
 
 
 if __name__ == "__main__":
-
     mpl.use("QtAgg")
     fig, ax = plt.subplots()
     x = np.linspace(0, 10, 100)

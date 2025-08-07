@@ -22,8 +22,9 @@ Contains the following classes:
 - MDAFileReader: A class to read / load MDA files.
 """
 
-import os, io
-from xdrlib3 import Unpacker, Packer
+import os
+import io
+from xdrlib3 import Unpacker
 from enum import Enum
 from typing import Any, Self
 import numpy as np
