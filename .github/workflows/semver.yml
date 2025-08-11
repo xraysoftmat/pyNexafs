@@ -130,7 +130,7 @@ jobs:
           echo "Released: ${{ steps.release.outputs.released }}"
           echo "Branch: ${{ github.ref }}; ${{ github.ref == 'refs/heads/main' }}"
           echo "released=${{ steps.release.outcome && github.ref == 'refs/heads/main' && steps.release.outputs.released && github.repository_owner == 'xraysoftmat' && steps.release.outcome == 'success' }}" >> "$GITHUB_OUTPUT"
-          
+
       - name: Publish | Upload to GitHub Release Assets
         uses: python-semantic-release/publish-action@v10.2.0
         if: |
