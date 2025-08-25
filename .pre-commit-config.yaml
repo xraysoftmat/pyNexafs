@@ -7,7 +7,7 @@
 repos:
 # Pre-commit hooks for basic Python processing
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
     -   id: check-added-large-files
         exclude: '^tests/test_data/.*\.mda$'
@@ -21,7 +21,7 @@ repos:
 # Ruff - for linting and formatting
 - repo: https://github.com/astral-sh/ruff-pre-commit
   # Ruff version.
-  rev: v0.12.7
+  rev: v0.12.10
   hooks:
     # Run the linter.
     - id: ruff-check
@@ -31,14 +31,14 @@ repos:
 
 # Black - for standard code formatting
 -   repo: https://github.com/psf/black
-    rev: 24.10.0
+    rev: 25.1.0
     hooks:
     -   id: black
         # extend-exclude: '^tests/test_data/.*$'
 
 # NumPyDoc - for docstring validation
 -   repo: https://github.com/numpy/numpydoc
-    rev: v1.8.0
+    rev: v1.9.0
     hooks:
       - id: numpydoc-validation
         exclude: '^test.*$'
@@ -57,7 +57,7 @@ repos:
 
 # Use "pre-commit install --hook-type commit-msg" to install, pre-commit install doesn't work.
 -   repo: https://github.com/opensource-nepal/commitlint
-    rev: v1.3.0
+    rev: v1.3.1
     hooks:
       - id: commitlint
         stages: [commit-msg]
