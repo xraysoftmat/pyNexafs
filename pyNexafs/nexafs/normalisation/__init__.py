@@ -7,28 +7,23 @@ different datasets.
 """
 
 # Config Classes
-from pyNexafs.nexafs.normalisation.norm_settings import (
-    configBase,
-    configSeries,
-    configChannel,
-    configExternalChannel,
-    configEdges,
-    configX,
-)
-
 # Config Enumerates
 from pyNexafs.nexafs.normalisation.norm_settings import (
-    normMethod,
+    configBase,
+    configChannel,
+    configEdges,
+    configExternalChannel,
+    configSeries,
+    configX,
     extSelection,
+    normMethod,
 )
-
-#
 from pyNexafs.nexafs.normalisation.scan_normalised import (
-    scanNorm,
-    scanNormExt,
     scanDoubleNorm,
-    scanNormEdges,
     scanEnergyNorm,
+    scanNorm,
+    scanNormEdges,
+    scanNormExt,
 )
 
 # from pyNexafs.nexafs.normalisation.scan_normalised import (

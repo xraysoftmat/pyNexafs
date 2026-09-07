@@ -1,18 +1,19 @@
-from PyQt6 import QtWidgets, QtCore, QtGui
-from pyNexafs.parsers._base import parserBase
-from pyNexafs.nexafs.scan import scanBase
-from typing import Type
-from builtins import function
+import os
 import sys
-from pyNexafs.gui.widgets.io.dir_selection import directorySelector
-import pyNexafs.parsers.au as AU_PARSERS
-from pyNexafs.gui.widgets.graphing.matplotlib.graphs import FigureCanvas, NEXAFS_NavQT
 import warnings
+from builtins import function
 from enum import Enum
+
+import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
-import os
-import matplotlib.pyplot as plt
+from PyQt6 import QtCore, QtGui, QtWidgets
+
+import pyNexafs.parsers.au as AU_PARSERS
+from pyNexafs.gui.widgets.graphing.matplotlib.graphs import FigureCanvas, NEXAFS_NavQT
+from pyNexafs.gui.widgets.io.dir_selection import directorySelector
+from pyNexafs.nexafs.scan import scanBase
+from pyNexafs.parsers._base import parserBase
 
 
 class save_directory_selector(directorySelector):
@@ -95,7 +96,7 @@ class horLine(QtWidgets.QFrame):
 
 
 class nexafsParserConverter(QtWidgets.QWidget):
-    def __init__(self, parsers: list[Type[parserBase | scanBase]] = [], parent=None):
+    def __init__(self, parsers: list[type[parserBase | scanBase]] = [], parent=None):
         super().__init__(parent)
         self._parsers = {parser.filename: parser for parser in parsers}
         self._conversions = []
@@ -383,7 +384,6 @@ class nexafsParserConverter(QtWidgets.QWidget):
                         label="Original",
                         c="b",
                     )
-                    pass
                 case _:
                     ax.plot(
                         current_converted.data[:, x_idx],
@@ -839,7 +839,7 @@ class nexafsParserConverter(QtWidgets.QWidget):
         self.analyse_filesize()
 
     @property
-    def parsers(self) -> list[Type[parserBase] | parserBase]:
+    def parsers(self) -> list[type[parserBase] | parserBase]:
         """
         The current set of parsers to use for conversion.
 
@@ -857,7 +857,7 @@ class nexafsParserConverter(QtWidgets.QWidget):
         return list(self._parsers.values())
 
     @parsers.setter
-    def parsers(self, parsers: list[Type[parserBase] | parserBase]):
+    def parsers(self, parsers: list[type[parserBase] | parserBase]):
         self._parsers = {
             parser.filename: parser for parser in parsers if parser is not None
         }
@@ -871,7 +871,7 @@ class nexafsParserConverter(QtWidgets.QWidget):
         self.diff_parser_selector.blockSignals(False)
 
     @property
-    def conversions(self) -> list[Type[parserBase]]:
+    def conversions(self) -> list[type[parserBase]]:
         return self._conversions
 
     @property
@@ -917,11 +917,9 @@ class nexafsParserConverter(QtWidgets.QWidget):
 
 
 class nexafsConverterQANT(nexafsParserConverter):
-    def __init__(self, parsers: list[Type[parserBase]] = [], parent=None):
+    def __init__(self, parsers: list[type[parserBase]] = [], parent=None):
         super().__init__(parsers, parent)
         self._title_label.setText("QANT Conversion:")
-
-    pass
 
 
 if __name__ == "__main__":

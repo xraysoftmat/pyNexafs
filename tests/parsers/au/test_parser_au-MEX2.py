@@ -1,8 +1,10 @@
 """Tests for the MEX2 parser - check that example files load correctly for each parser function version"""
 
-import pytest
 import os
+
 import numpy as np
+import pytest
+
 from pyNexafs.parsers.au.aus_sync.MEX2 import MEX2_NEXAFS
 
 # Relative directories for the test data.
@@ -204,9 +206,8 @@ if __name__ == "__main__":
     fname = "MEX2_5641.mda"
     # fname = "MEX2_5641_processed.xdi"
 
-    #
-    import pkgutil
     import io
+    import pkgutil
 
     bdata = pkgutil.get_data("pyNexafs", f"../tests/test_data/au/MEX2/{folder}/{fname}")
     assert bdata is not None

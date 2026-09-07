@@ -5,12 +5,15 @@ For instance, as of Apr 2024, the MEX2 beamline at the Australian Synchrotron ha
 each with 4096 energy bins (channels), all of which is recorded as the beam energy is scanned.
 """
 
+import os
+from collections.abc import Callable
+from typing import Literal
+
+import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
-import os
+
 from pyNexafs.utils.mda import MDAFileReader
-import matplotlib.pyplot as plt
-from typing import Callable, Literal
 
 
 class reducer:

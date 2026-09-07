@@ -1,12 +1,13 @@
 import sys
 from typing import override
-import numpy as np
+
 import matplotlib as mpl
-import matplotlib.figure
 import matplotlib.colors
-from PyQt6 import QtGui, QtWidgets, QtCore
-import PIL.ImageQt as PILImageQt
+import matplotlib.figure
+import numpy as np
 import PIL.Image as PILImage
+import PIL.ImageQt as PILImageQt
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 mpl.use("QtAgg")
 

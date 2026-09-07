@@ -3,29 +3,29 @@ Parser classes for the Medium Energy X-ray 2 (MEX2) beamline at the Australian S
 """
 
 # Internal
-from pyNexafs.parsers import parserBase
-from pyNexafs.utils.mda import MDAFileReader
-from pyNexafs.utils.reduction import reducer
-from pyNexafs.parsers.au.aus_sync.MEX2_relabels import RELABELS
-from pyNexafs.types import parse_fn_ret_type, reduction_type
-from pyNexafs.parsers.au.aus_sync.MEX_detectors import (
-    DanteFluorescence,
-    Xpress3Fluorescence,
-)
-from pyNexafs.nexafs import scanBase
-from pyNexafs.types import dtype
+import ast
+import datetime
+import io
+import os
 
 # Standard
 import typing
-import ast
 import warnings
-import datetime
-import os
-import io
 
 # External
 import numpy as np
 import numpy.typing as npt
+
+from pyNexafs.nexafs import scanBase
+from pyNexafs.parsers import parserBase
+from pyNexafs.parsers.au.aus_sync.MEX2_relabels import RELABELS
+from pyNexafs.parsers.au.aus_sync.MEX_detectors import (
+    DanteFluorescence,
+    Xpress3Fluorescence,
+)
+from pyNexafs.types import dtype, parse_fn_ret_type, reduction_type
+from pyNexafs.utils.mda import MDAFileReader
+from pyNexafs.utils.reduction import reducer
 
 has_PYQT: bool
 try:
@@ -899,7 +899,7 @@ def MEX2_to_QANT_AUMainAsc(
         A list of lines for the QANT AUMainAsc format, with newline terminations included.
     """
     import datetime as dt
-    from typing import Hashable
+    from collections.abc import Hashable
 
     possible_read_values = [
         "SR14ID01MCS02FAM:X.RBV",
