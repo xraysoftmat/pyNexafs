@@ -9,16 +9,16 @@ Allowed arguments:
 - If no arguments are provided, the GUI will open pointed at the user folder '~'.
 """
 
-import sys
 import os
-from importlib.metadata import version
+import sys
 import traceback
+from importlib.metadata import version
 
 # Internal Imports
 hasQT: bool
 try:
     import PyQt6  # noqa: F401
-    from PyQt6 import QtWidgets  # noqa: F401
+    from PyQt6 import QtWidgets
 
     hasQT = True
 except ImportError:
@@ -59,7 +59,7 @@ def main_with_traceback(dir_arg: str | None = None):
         error_dialog = QtWidgets.QErrorMessage()
         # Prepare the message: the error and the traceback
         msg = f"An error occurred, causing kkcalc to crash.:\
-               \n{str(e)}\
+               \n{e!s}\
                \nPlease report this issue at https://github.com/xraysoftmat/kkcalc/issues"
         error_dialog.showMessage(msg)
         app.exec()

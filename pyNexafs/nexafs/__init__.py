@@ -4,22 +4,21 @@ This module contains the classes and functions to handle and process 1D NEXAFS s
 This includes treating the data, such as normalising it, and performing background subtraction.
 """
 
-from pyNexafs.nexafs.scan import scanBase, scanAbstract, parsedScanAbstract, scanSimple
-
 from pyNexafs.nexafs.normalisation.norm_settings import (
     configChannel,
-    configExternalChannel,
     configEdges,
+    configExternalChannel,
     configSeries,
     normMethod,
 )
 from pyNexafs.nexafs.normalisation.scan_normalised import (
-    scanNorm,
-    scanNormExt,
     scanDoubleNorm,
-    scanNormEdges,
     scanEnergyNorm,
+    scanNorm,
+    scanNormEdges,
+    scanNormExt,
 )
+from pyNexafs.nexafs.scan import parsedScanAbstract, scanAbstract, scanBase, scanSimple
 
 __all__ = [
     # Configuration classes

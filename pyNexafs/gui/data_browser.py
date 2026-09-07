@@ -4,10 +4,9 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
     QApplication,
     QHBoxLayout,
-    QWidget,
     QSplitter,
+    QWidget,
 )
-
 
 from pyNexafs.gui.widgets.fileloader import nexafsFileLoader
 from pyNexafs.gui.widgets.viewer import nexafsViewer
