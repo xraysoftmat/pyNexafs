@@ -1,11 +1,12 @@
 """ "Tests the base parser classes and their methods"""
 
 import tempfile
-import pytest
+
 import numpy as np
+import pytest
 
 # Test the creation of a new parser class.
-from pyNexafs.parsers._base import parserMeta, parserBase
+from pyNexafs.parsers._base import parserBase, parserMeta
 from pyNexafs.types import dtype
 
 ##############################################################################
@@ -293,7 +294,6 @@ class TestParserMeta:
 
             class Test_Parser(parserBase):
                 ALLOWED_EXTENSIONS = [".txt"]
-                pass
 
         assert "Class Test_Parser does not define COLUMN_ASSIGNMENTS." in str(e)
 

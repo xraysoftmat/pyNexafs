@@ -1,15 +1,16 @@
 import os
 import sys
-import matplotlib.figure
+from typing import override
+
 import matplotlib.axes
+import matplotlib.figure
 import matplotlib.pyplot as plt
 import numpy as np
-from typing import override
-from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.backend_bases import NavigationToolbar2 as NavTB
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavTBQT
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.backends.qt_compat import _to_int
-from PyQt6 import QtGui, QtWidgets, QtCore
+from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QStyle
 
 
@@ -163,7 +164,6 @@ class NEXAFS_NavQT(NavTBQT, QtWidgets.QToolBar):
             action.setIcon(
                 self._icon(self.toolitems[index][2], light_theme=light_theme_bool)
             )
-        pass
 
     @override
     def event(self, event: QtCore.QEvent) -> bool:

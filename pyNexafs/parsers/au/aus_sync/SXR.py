@@ -2,16 +2,16 @@
 Parser classes for the Soft X-ray (SXR) beamline at the Australian Synchrotron.
 """
 
-from pyNexafs.parsers import parserBase
-from pyNexafs.types import parse_fn_ret_type
-from pyNexafs.utils.mda import MDAFileReader
-from typing import Any
-import typing
-from numpy.typing import NDArray
 import io
+import typing
+from typing import Any, override
+
 import numpy as np
-from typing import override
-from pyNexafs.types import dtype
+from numpy.typing import NDArray
+
+from pyNexafs.parsers import parserBase
+from pyNexafs.types import dtype, parse_fn_ret_type
+from pyNexafs.utils.mda import MDAFileReader
 
 
 class SXR_NEXAFS(parserBase):
@@ -707,9 +707,8 @@ if __name__ == "__main__":
     fname = "sxr130214.asc"
     fname = "sxr130214.mda"
 
-    #
-    import pkgutil
     import io
+    import pkgutil
 
     bdata = pkgutil.get_data("pyNexafs", f"../tests/test_data/au/SXR/2024-03/{fname}")
     assert bdata is not None
