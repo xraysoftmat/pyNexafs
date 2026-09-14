@@ -6,9 +6,9 @@ Current beamlines supported include are:
 - MEX2_NEXAFS : Australian Synchrotron Medium Energy X-ray NEXAFS parser.
 """
 
-from pyNexafs.parsers.au.aus_sync.SXR import SXR_NEXAFS
 from pyNexafs.parsers.au.aus_sync.MEX1 import MEX1_NEXAFS, MEX1_to_QANT_AUMainAsc
 from pyNexafs.parsers.au.aus_sync.MEX2 import MEX2_NEXAFS, MEX2_to_QANT_AUMainAsc
+from pyNexafs.parsers.au.aus_sync.SXR import SXR_NEXAFS
 
 all = [
     SXR_NEXAFS,

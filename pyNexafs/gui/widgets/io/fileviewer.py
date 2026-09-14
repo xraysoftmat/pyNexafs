@@ -2,38 +2,40 @@
 Table model and widget for the file display.
 """
 
-import re
-import traceback
 import os
+import re
 import sys
-from typing import Any, override
+import traceback
 import warnings
-import numpy as np
 from datetime import datetime as dt
 from enum import Enum
-from PyQt6 import QtWidgets, QtCore, QtGui
-from PyQt6.QtWidgets import (
-    QWidget,
-    QTableView,
-    QAbstractItemView,
-    QProgressBar,
-    QApplication,
-    QStyle,
-    QTableWidget,
-    QTableWidgetItem,
-)
+from typing import Any, override
+
+import numpy as np
+from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import (
-    Qt,
-    pyqtSignal,
-    QSortFilterProxyModel,
-    QRegularExpression,
     QAbstractTableModel,
+    QRegularExpression,
+    QSortFilterProxyModel,
+    Qt,
     QThreadPool,
     # QThread,
+    pyqtSignal,
 )
+from PyQt6.QtWidgets import (
+    QAbstractItemView,
+    QApplication,
+    QProgressBar,
+    QStyle,
+    QTableView,
+    QTableWidget,
+    QTableWidgetItem,
+    QWidget,
+)
+
 from pyNexafs.parsers import parserBase
-from pyNexafs.utils.sizes import btyes_to_human_readable
 from pyNexafs.parsers.au.aus_sync.MEX2 import MEX2_NEXAFS
+from pyNexafs.utils.sizes import btyes_to_human_readable
 
 
 # Construct the Table Model
@@ -58,7 +60,7 @@ class tableModel(QAbstractTableModel):
     _status_header = ""  # string header for the loaded status column.
 
     def __init__(self, data, header=None):
-        super(tableModel, self).__init__()
+        super().__init__()
         self._data = data
         """A list of lists containing the data to be displayed in the table."""
         self._header = header
@@ -549,11 +551,10 @@ class directoryViewerTable(QTableView):
             self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
         # Update column widths with header update.
-        for i in range(0, len(self._header_names)):
+        for i in range(len(self._header_names)):
             # If the current column width is larger than the size hint, resize to fit for all columns.
             if self.columnWidth(i) > self.sizeHintForColumn(i):
                 self.resizeColumnToContents(i)
-        return
 
     def update_table(self):
         """
@@ -682,7 +683,7 @@ class directoryViewerTable(QTableView):
         self.proxy_model.setSourceModel(self.files_model)
 
         self.resizeColumnToContents(0)
-        for i in range(0, len(self._header_names)):
+        for i in range(len(self._header_names)):
             # If the current column width is larger than the size hint, resize to fit for all columns.
             if self.columnWidth(i) > self.sizeHintForColumn(i):
                 self.resizeColumnToContents(i)
@@ -742,7 +743,6 @@ class directoryViewerTable(QTableView):
             # Trigger a loading completed signal.
             self.progress_bar.setValue(0)
             self.selection_loaded.emit(True)
-        return
 
     @property
     def selected_filenames(self) -> list[str]:
@@ -1584,7 +1584,7 @@ class directoryViewerTableNew(QTableView):
                 self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
         # Update column widths with header update.
-        for i in range(0, len(formatted_header)):
+        for i in range(len(formatted_header)):
             # If the current column width is larger than the size hint, resize to fit for all columns.
             if self.columnWidth(i) > self.sizeHintForColumn(i):
                 self.resizeColumnToContents(i)
@@ -1613,7 +1613,7 @@ class directoryViewerTableNew(QTableView):
         # Resize the columns to fit the contents
         self.resizeColumnToContents(0)
         if header is not None:
-            for i in range(0, len(header)):
+            for i in range(len(header)):
                 # If the current column width is larger than the size hint, resize to fit for all columns.
                 if self.columnWidth(i) > self.sizeHintForColumn(i):
                     self.resizeColumnToContents(i)
@@ -1748,7 +1748,6 @@ class directoryViewerTableNew(QTableView):
             # Trigger a loading completed signal.
             self.progress_bar.setValue(0)
             self.selection_loaded.emit(True)
-        return
 
     @property
     def selected_filenames(self) -> list[str]:
@@ -1869,7 +1868,6 @@ class SummaryParamSelector(QTableWidget):
         self._parser_cls = self._collect_unique_parser_cls()
         # Update the table
         self._populate()
-        return
 
     @property
     def params(self) -> set[str]:
@@ -1931,7 +1929,6 @@ class SummaryParamSelector(QTableWidget):
                 item.setCheckState(Qt.CheckState.Checked)
             else:
                 item.setCheckState(Qt.CheckState.Unchecked)
-        return
 
     def _populate(self, existing_selection: list[str] | None = None) -> None:
         """
@@ -2025,7 +2022,6 @@ class SummaryParamSelector(QTableWidget):
         self._parser_cls = self._collect_unique_parser_cls()
         self._initialise_items()
         self._populate()
-        return
 
     def resizeEvent(self, e: QtGui.QResizeEvent | None) -> None:
         """
@@ -2132,7 +2128,6 @@ class SummaryParamSelectorDialog(QtWidgets.QDialog):
             The text to filter the parameters by.
         """
         self.selector.filter_parameters(text)
-        return
 
     def _relabel_parser_objects(self, state: int) -> None:
         """
@@ -2150,7 +2145,6 @@ class SummaryParamSelectorDialog(QtWidgets.QDialog):
             cls.relabel = state is Qt.CheckState.Checked
         # Repopulate the table with (re)labelled parameters.
         self.selector.refresh()
-        return
 
     @property
     def selector(self) -> SummaryParamSelector:
