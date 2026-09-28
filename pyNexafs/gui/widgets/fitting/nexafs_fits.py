@@ -2,15 +2,16 @@
 Module to perform graphical NEXAFS fitting
 """
 
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel
-from pyNexafs.gui.widgets.graphing.matplotlib.graphs import FigureCanvas, NEXAFS_NavQT
-from pyNexafs.nexafs import scanBase
-from matplotlib.figure import Figure
+import os
 
 # Extras for __main__ testing
 import sys
-import os
-from PyQt6.QtWidgets import QApplication
+
+from matplotlib.figure import Figure
+from PyQt6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
+
+from pyNexafs.gui.widgets.graphing.matplotlib.graphs import FigureCanvas, NEXAFS_NavQT
+from pyNexafs.nexafs import scanBase
 from pyNexafs.parsers.au.aus_sync.MEX2 import MEX2_NEXAFS
 
 
