@@ -1,16 +1,16 @@
+from typing import Literal, override
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib.cbook as cbook
+import numpy as np
+from matplotlib import backend_tools, cbook, colormaps, colors
+from matplotlib.patches import Rectangle
 from matplotlib.widgets import (
     SpanSelector,
     ToolLineHandles,
-    _SelectorWidget,
     _call_with_reparented_event,
+    _SelectorWidget,
 )
-from matplotlib.patches import Rectangle
-from matplotlib import colors, colormaps, backend_tools
-import numpy as np
-from typing import Literal, override
 
 
 class SpanSelectorN(SpanSelector):
@@ -732,11 +732,10 @@ class SpanSelectorN(SpanSelector):
             and self._edge_handles.artists[index].get_visible()
         ):
             self._set_cursor(
-                (  # Within grab range of a visible handle
-                    backend_tools.cursors.RESIZE_HORIZONTAL
-                    if self.direction == "horizontal"
-                    else backend_tools.cursors.RESIZE_VERTICAL
-                )
+                # Within grab range of a visible handle
+                backend_tools.cursors.RESIZE_HORIZONTAL
+                if self.direction == "horizontal"
+                else backend_tools.cursors.RESIZE_VERTICAL
             )
         else:
             # Check if within any span
@@ -1155,7 +1154,6 @@ class SpanSelectorN(SpanSelector):
                 # Make sure base_colors is a list
                 if not isinstance(base_colors, (list, np.ndarray)):
                     base_colors = [base_colors]
-                #
                 n_base = len(base_colors)
                 for i in range(self.N):
                     c = base_colors[i % n_base]
@@ -1416,11 +1414,9 @@ if __name__ == "__main__":
 
     def onselect1(xmin, xmax):
         print("1st Span:\t", xmin, xmax)
-        pass
 
     def onselect2(xmin, xmax):
         print("2nd Span:\t", xmin, xmax)
-        pass
 
     def onselect3(xmin, xmax):
         print("3rd Span:\t", xmin, xmax)
@@ -1429,7 +1425,6 @@ if __name__ == "__main__":
         newGreen[0:3] = thecols[-1][0:3]  # keep colour, change alpha
         thecols[-1] = tuple(newGreen)
         span.colors_rect = thecols
-        pass
 
     span = SpanSelectorN(
         N=3,

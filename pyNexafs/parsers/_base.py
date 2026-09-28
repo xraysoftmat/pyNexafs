@@ -24,26 +24,27 @@ The following methods are also optional to implement, and will otherwise return 
 """
 
 import abc
-import sys
-import os
 import io
-import types
-import warnings
-import typing
+import os
+import sys
 import tempfile
-from typing import Self, Callable, Iterable, Any, override, IO, TextIO
+import types
+import typing
+import warnings
 from _collections_abc import dict_items, dict_keys
-from collections.abc import KeysView, ItemsView
+from collections.abc import Callable, ItemsView, Iterable, KeysView
+from typing import IO, Any, Self, TextIO, override
 
 if typing.TYPE_CHECKING:
     from _typeshed import SupportsKeysAndGetItem
+import datetime
+import traceback
+
 import numpy as np
 import numpy.typing as npt
 
 from pyNexafs.nexafs.scan import scanBase
-from pyNexafs.types import dtype, parse_fn_ret_type, assignments_type, reduction_type
-import traceback
-import datetime
+from pyNexafs.types import assignments_type, dtype, parse_fn_ret_type, reduction_type
 
 # Optional pandas import
 try:
@@ -406,7 +407,6 @@ class parserMeta(abc.ABCMeta):
                         collected_keys[relabel_val] = (
                             item if item != relabel_val else None
                         )
-            return
 
         @override
         def __contains__(self, key: object) -> bool:
@@ -523,10 +523,7 @@ class parserMeta(abc.ABCMeta):
             for i in range(start, stop):
                 element = self[i]
                 # Direct match
-                if element == value:
-                    return i
-                # Tuple match
-                elif isinstance(element, tuple) and value in element:
+                if element == value or isinstance(element, tuple) and value in element:
                     return i
             raise ValueError(f"{value} is not in the list, or within a tuple element.")
 
@@ -797,7 +794,6 @@ class parserMeta(abc.ABCMeta):
         # Check the number of parser methods is non-zero.
         if cls.__name__ != "parserBase" and len(cls.parse_functions) == 0:
             raise AttributeError(f"No parser methods found in `{cls.__name__}` class.")
-        return
 
     @property
     def ALLOWED_EXTENSIONS(cls) -> list[str]:
@@ -934,7 +930,6 @@ class parserMeta(abc.ABCMeta):
             raise ValueError(
                 f"'x_errs' assignment {x_errs} is not a string, tuple of (synonymous) strings, or None."
             )
-        return
 
     @property
     def COLUMN_ASSIGNMENTS(cls) -> assignments_type:
@@ -2252,10 +2247,8 @@ class parserBase(abc.ABC, metaclass=parserMeta):
                                 arg_names.remove(name)
 
                         # Check all keyword args are in the arg_names, otherwise skip the method.
-                        if not all([kw in kwargs.keys() for kw in arg_names]):
-                            missing_args = [
-                                kw for kw in arg_names if kw not in kwargs.keys()
-                            ]
+                        if not all([kw in kwargs for kw in arg_names]):
+                            missing_args = [kw for kw in arg_names if kw not in kwargs]
 
                             # Check if the argument has a default value.
                             for arg in missing_args:
@@ -2267,9 +2260,7 @@ class parserBase(abc.ABC, metaclass=parserMeta):
                                     continue
 
                         # Copy kwargs and only use the arguments that are in the method signature.
-                        fn_kwargs = {
-                            kw: kwargs[kw] for kw in arg_names if kw in kwargs.keys()
-                        }
+                        fn_kwargs = {kw: kwargs[kw] for kw in arg_names if kw in kwargs}
                         if type(parse_fn) is types.FunctionType:  # staticmethod
                             obj = (
                                 parse_fn(file, header_only, **fn_kwargs)
@@ -2317,7 +2308,7 @@ class parserBase(abc.ABC, metaclass=parserMeta):
 
             msg = f"------------------------- All {cls.__name__} loaders failed -------------------------"
             for pfn, err in parse_errs.items():
-                msg += f"\nMethod '{pfn.__name__}' failed with {repr(err)}."
+                msg += f"\nMethod '{pfn.__name__}' failed with {err!r}."
                 with io.StringIO() as buf:
                     traceback.print_exception(
                         type(err), err, err.__traceback__, file=buf
@@ -2537,8 +2528,6 @@ class parserBase(abc.ABC, metaclass=parserMeta):
         # Add a size entry for pyNexafs
         if "memory_size" not in params or params["memory_size"] is None:
             params["memory_size"] = self.memorysize
-
-        return
 
     @staticmethod
     def convert_to_datetime(time_input: Any) -> datetime.datetime:
