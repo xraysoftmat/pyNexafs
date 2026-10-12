@@ -2,11 +2,13 @@
 Module to handle default normalisation settings to be used across datasets.
 """
 
-from enum import Enum, EnumType
-from abc import ABC, abstractmethod, ABCMeta
-from io import TextIOWrapper
-import yaml
 import os
+from abc import ABC, ABCMeta, abstractmethod
+from enum import Enum, EnumType
+from io import TextIOWrapper
+
+import yaml
+
 from pyNexafs.types import dtype
 
 
@@ -89,7 +91,6 @@ class configBase(ABC, metaclass=configMeta):
         bool
             True if the settings are valid, False otherwise.
         """
-        pass
 
 
 class configYBase(configBase, metaclass=configMeta):
@@ -125,7 +126,6 @@ class configYBase(configBase, metaclass=configMeta):
         bool
             True if the settings are valid, False otherwise.
         """
-        pass
 
     @property
     def apply_to(self) -> list[str | int] | None:
