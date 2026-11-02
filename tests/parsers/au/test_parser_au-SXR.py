@@ -1,8 +1,10 @@
 """Tests for the MEX2 parser - check that example files load correctly for each parser function version"""
 
-import pytest
 import os
+
 import numpy as np
+import pytest
+
 from pyNexafs.parsers.au.aus_sync.SXR import SXR_NEXAFS
 
 # Relative directories for the test data.

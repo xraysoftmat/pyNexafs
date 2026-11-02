@@ -1,33 +1,34 @@
+import sys
+
 from PyQt6 import QtWidgets
-from PyQt6.QtWidgets import (
-    QWidget,
-    QLineEdit,
-    QHBoxLayout,
-    QVBoxLayout,
-    QComboBox,
-    QApplication,
-    QLabel,
-    QTextEdit,
-    QCheckBox,
-    QSplitter,
-    QStyle,
-    QProgressBar,
-    QPushButton,
-)
 
 # from PyQt6.QtWidgets import QScrollBar, QHeaderView, QMainWindow, QTableWidget, QFrame, QGridLayout, QSizeGrip
 from PyQt6.QtCore import (
     Qt,
     pyqtSignal,
 )
-import sys
-from pyNexafs.parsers import parser_loaders, parserBase
-from typing import Type
+from PyQt6.QtWidgets import (
+    QApplication,
+    QCheckBox,
+    QComboBox,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QProgressBar,
+    QPushButton,
+    QSplitter,
+    QStyle,
+    QTextEdit,
+    QVBoxLayout,
+    QWidget,
+)
+
 from pyNexafs.gui.widgets.io.dir_selection import directorySelector
 from pyNexafs.gui.widgets.io.fileviewer import (
-    directoryViewerTableNew,
     SummaryParamSelectorDialog,
+    directoryViewerTableNew,
 )
+from pyNexafs.parsers import parser_loaders, parserBase
 
 
 class nexafsFileLoader(QWidget):
@@ -161,7 +162,6 @@ class nexafsFileLoader(QWidget):
         Signal for selection change.
         """
         self.selectionLoaded.emit(True)
-        return
 
     def update_relabelling(self) -> None:
         """
@@ -185,7 +185,6 @@ class nexafsFileLoader(QWidget):
         self.directory_viewer.directory = new_dir
         # Log file updates.
         self._log_entry()
-        return
 
     def update_parser(self) -> None:
         """
@@ -199,7 +198,6 @@ class nexafsFileLoader(QWidget):
         self.directory_viewer.parser = new_parser
         self.filter._changing_parser = False
         self._log_entry()
-        return
 
     def update_filters(self):
         """
@@ -211,7 +209,6 @@ class nexafsFileLoader(QWidget):
             self.filter.filetypes_selection,
         )
         self._log_entry()
-        return
 
     def _log_entry(self):
         # Log the current selection
@@ -248,7 +245,6 @@ class nexafsFileLoader(QWidget):
 
         # End line
         self.log_text += ". "  # no whitespace, assuming log files will be called next.
-        return
 
     def _log_files(self):
         """
@@ -290,7 +286,7 @@ class nexafsFileLoader(QWidget):
         self.log.setText("")
 
     @property
-    def loaded_parser_headers(self) -> dict[str, Type[parserBase] | None]:
+    def loaded_parser_headers(self) -> dict[str, type[parserBase] | None]:
         """
         Returns the parser headers loaded in the directory viewer.
 
@@ -302,7 +298,7 @@ class nexafsFileLoader(QWidget):
         return self.directory_viewer._parser_headers
 
     @property
-    def loaded_parsers_files(self) -> dict[str, Type[parserBase] | None]:
+    def loaded_parsers_files(self) -> dict[str, type[parserBase] | None]:
         """
         Returns the full-file parsers loaded in the directory viewer.
 
@@ -314,7 +310,7 @@ class nexafsFileLoader(QWidget):
         return self.directory_viewer._parser_files
 
     @property
-    def loaded_parser_files_selection(self) -> dict[str, Type[parserBase] | None]:
+    def loaded_parser_files_selection(self) -> dict[str, type[parserBase] | None]:
         """
         Returns the selection subset of full-file parsers from the directory viewer.
 
