@@ -1,5 +1,6 @@
 import abc
-from typing import Callable, Any, TypeAlias, ParamSpec, TypeVar
+from collections.abc import Callable
+from typing import Any, ParamSpec, TypeAlias, TypeVar
 
 P = ParamSpec("P")
 T = TypeVar("T")
@@ -38,7 +39,6 @@ if __name__ == "__main__":
         """
         Copy this docstring.
         """
-        pass
 
     @doc_copy(copy_func)
     def f():
@@ -76,7 +76,6 @@ if __name__ == "__main__":
         @myprop.setter
         def myprop(self, val):
             print("set", val)
-            return
 
         @myprop.getter_item
         def myprop(self, key: int | str):

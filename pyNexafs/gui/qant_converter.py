@@ -1,13 +1,15 @@
 import sys
+
+from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
     QApplication,
     QHBoxLayout,
     QSplitter,
 )
-from PyQt6 import QtWidgets
-from pyNexafs.gui.widgets.fileloader import nexafsFileLoader
+
 from pyNexafs.gui.widgets.converter import nexafsConverterQANT
+from pyNexafs.gui.widgets.fileloader import nexafsFileLoader
 
 
 class converterWidget(QtWidgets.QWidget):

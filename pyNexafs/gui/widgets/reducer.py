@@ -1,17 +1,18 @@
-from PyQt6 import QtGui, QtWidgets, QtCore
-import numpy as np
-from pyNexafs.gui.widgets.graphing.matplotlib.graphs import FigureCanvas
-import matplotlib.pyplot as plt
-import matplotlib.colors as mpl_colors
+import os
+
 import matplotlib as mpl
+import matplotlib.colors as mpl_colors
+import matplotlib.pyplot as plt
+import numpy as np
+import numpy.typing as npt
 from matplotlib.backend_bases import MouseButton
 
 # from pyNexafs.gui.widgets.graphing.matplotlib.widgets import NSpanSelector
 from matplotlib.widgets import SpanSelector
-from pyNexafs.gui.widgets.graphing.matplotlib.graphs import NavTBQT
-import numpy.typing as npt
+from PyQt6 import QtCore, QtGui, QtWidgets
+
+from pyNexafs.gui.widgets.graphing.matplotlib.graphs import FigureCanvas, NavTBQT
 from pyNexafs.utils.mda import MDAFileReader
-import os
 from pyNexafs.utils.reduction import reducer
 
 
@@ -356,7 +357,7 @@ class EnergyBinReducer(QtWidgets.QWidget):
 
             ax.set_xlabel("Energy (eV)")
             ax.set_ylabel("Counts")
-            ax.set_title("Detector {}".format(i))
+            ax.set_title(f"Detector {i}")
         # Update the canvas
         self.detector_canvas.draw()
 
