@@ -5,11 +5,12 @@ This allows the selection of a filepath.
 """
 
 import os
-from PyQt6 import QtWidgets, QtCore, QtGui
+import sys
+
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 # Extras for __main__ testing
 from PyQt6.QtWidgets import QApplication
-import sys
 
 
 class directorySelector(QtWidgets.QWidget):
