@@ -23,12 +23,13 @@ Contains the following classes:
 """
 
 import os
-from io import BufferedReader, BytesIO
-from xdrlib3 import Unpacker
 from enum import Enum
-from typing import Any, Self, BinaryIO
+from io import BufferedReader, BytesIO
+from typing import Any, BinaryIO, Self
+
 import numpy as np
 import numpy.typing as npt
+from xdrlib3 import Unpacker
 
 # Optional import
 try:
