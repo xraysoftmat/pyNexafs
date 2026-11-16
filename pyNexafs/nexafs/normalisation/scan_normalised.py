@@ -1,25 +1,29 @@
 from __future__ import annotations  # For type hinting within class definitions
-import numpy.typing as npt
-import numpy as np
+
 import abc
-import warnings
 import datetime
-from scipy import optimize as sopt
+import warnings
+from collections.abc import Sequence
 from types import NoneType
-from typing import Self, overload, Literal, override, TYPE_CHECKING, Sequence
-from pyNexafs.nexafs.scan import scanBase, scanAbstract, parsedScanAbstract
+from typing import TYPE_CHECKING, Literal, Self, overload, override
+
+import numpy as np
+import numpy.typing as npt
+from scipy import optimize as sopt
+
 from pyNexafs.nexafs.normalisation.norm_settings import (
-    # Enumerates
-    normMethod,
-    extSelection,
-    edgeNormPre,
-    edgeNormPost,
     # Config Classes
     configBase,
     configChannel,
-    configExternalChannel,
     configEdges,
+    configExternalChannel,
+    edgeNormPost,
+    edgeNormPre,
+    extSelection,
+    # Enumerates
+    normMethod,
 )
+from pyNexafs.nexafs.scan import parsedScanAbstract, scanAbstract, scanBase
 from pyNexafs.types import dtype
 from pyNexafs.utils.functions import gaussian, lorentzian, pseudo_voigt
 
@@ -70,7 +74,7 @@ class scanAbstractNorm(scanAbstract, metaclass=abc.ABCMeta):
                 return True
 
     @property
-    def parser(self) -> "parserBase":
+    def parser(self) -> parserBase:
         """
         Recursively collect the original parser.
 
@@ -240,7 +244,6 @@ class scanAbstractNorm(scanAbstract, metaclass=abc.ABCMeta):
         """
         Abstract method to apply the normalisation to the x/y data.
         """
-        pass
 
     def _load_from_origin(self) -> None:
         """
@@ -267,7 +270,6 @@ class scanAbstractNorm(scanAbstract, metaclass=abc.ABCMeta):
         """
         self._load_from_origin()
         self._apply_normalisation()
-        return
 
     ## X property already covered by scan_abstract
 
@@ -411,7 +413,6 @@ class scanAbstractNorm(scanAbstract, metaclass=abc.ABCMeta):
         type[configBase]
             The configuration class for the normalisation settings.
         """
-        pass
 
     @property
     @abc.abstractmethod
@@ -424,11 +425,10 @@ class scanAbstractNorm(scanAbstract, metaclass=abc.ABCMeta):
         norm_config
             The normalisation settings.
         """
-        pass
 
     @staticmethod
     @abc.abstractmethod
-    def from_config(scan: scanAbstract, config: configBase) -> "scanAbstractNorm":
+    def from_config(scan: scanAbstract, config: configBase) -> scanAbstractNorm:
         """
         Load the normalisation settings from a configuration object.
 
@@ -1218,7 +1218,6 @@ class scanNorm(scanAbstractYNorm):
                 self._normalisation_multiply()
             case _:
                 raise ValueError("Normalisation method not defined.")
-        return
 
     def _normalisation_multiply(self) -> None:
         # Multiply the y data by the normalisation data.
@@ -1755,7 +1754,6 @@ class scanNormEdges(scanAbstractYNorm):
 
         # Perform normalisation
         self.load_and_normalise()
-        return
 
     @override
     def _config_class(self) -> type[configBase]:
@@ -2023,8 +2021,6 @@ class scanNormEdges(scanAbstractYNorm):
                     raise ValueError(
                         f"Post-edge normalisation type not defined for {self.post_edge_norm_method}."
                     )
-
-        return
 
     @property
     def pre_edge_domain(self) -> tuple[float, float] | list[int] | None:
@@ -2321,7 +2317,6 @@ class scanDoubleNorm(scanAbstractYNorm):
 
         # Perform normalisation
         # self.load_and_normalise()
-        return
 
     @property
     def ext_scan(self) -> scanAbstract:
@@ -2416,7 +2411,9 @@ class scanDoubleNorm(scanAbstractYNorm):
 
 if __name__ == "__main__":
     import os
+
     import matplotlib.pyplot as plt
+
     import pyNexafs
 
     # Create a basic scan object form test data

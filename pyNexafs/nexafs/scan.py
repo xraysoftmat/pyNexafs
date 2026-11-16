@@ -12,19 +12,21 @@ pynexafs.parsers.parserBase : Base class for synchrotron data parsers.
 
 # Stdlib imports
 from __future__ import annotations  # For type hinting within class definitions
+
 import abc
 import datetime
-import os
 import io
+import os
 from typing import TYPE_CHECKING, Self, override
+
+import numpy as np
 
 # External imports
 import numpy.typing as npt
-import numpy as np
 
 try:
-    import matplotlib.figure
     import matplotlib.axes
+    import matplotlib.figure
     import matplotlib.pyplot as plt
 
     HAS_MPL = True
@@ -55,7 +57,6 @@ class scanAbstract(metaclass=abc.ABCMeta):
         self._x_unit: str | None = None
         self._y_labels: list[str | None] | None = None
         self._y_units: list[str | None] | None = None
-        return
 
     @abc.abstractmethod
     def copy(self, newobj: scanAbstract | None = None) -> Self:
@@ -395,7 +396,6 @@ class scanAbstract(metaclass=abc.ABCMeta):
             raise ValueError(
                 f"Provided `labels` {labels} is not a list of only strings."
             )
-        return
 
     @property
     def x_unit(self) -> str:
@@ -424,7 +424,6 @@ class scanAbstract(metaclass=abc.ABCMeta):
             self._x_unit = None
         else:
             raise ValueError(f"Provided `unit` {unit} is not a string.")
-        return
 
     @property
     def y_units(self) -> list[str | None] | None:
@@ -463,9 +462,8 @@ class scanAbstract(metaclass=abc.ABCMeta):
                 self._y_units = units.copy()  # Allow setting units if y is None.
         else:
             raise ValueError(f"Provided 'units' {units} is not a list of strings.")
-        return
 
-    def snapshot(self, columns: int | None = None) -> "matplotlib.figure.Figure":
+    def snapshot(self, columns: int | None = None) -> matplotlib.figure.Figure:
         """
         Generate a grid of plots, showing all scan data.
 
@@ -564,7 +562,7 @@ class scanAbstract(metaclass=abc.ABCMeta):
             csv_file = io.StringIO()
         else:
             if os.path.exists(filename):
-                raise IOError(f"The following filepath already exists:\n{filename}")
+                raise OSError(f"The following filepath already exists:\n{filename}")
             csv_file = open(filename, "w")
         # Write the header
         y_labels = self.y_labels
@@ -600,8 +598,9 @@ class scanAbstract(metaclass=abc.ABCMeta):
                 combo = [unit if unit is not None else "" for unit in y_units]
                 csv_file.write(f"{self.x_unit}{delim}{delim.join(combo)}\n")
         # Write the data
-        for i in range(len(x)):
-            csv_file.write(f"{x[i]}{delim}{delim.join(str(y) for y in y[i])}\n")
+        csv_file.writelines(
+            f"{x[i]}{delim}{delim.join(str(y) for y in y[i])}\n" for i in range(len(x))
+        )
 
         if filename is None:
             csv_file.seek(0)  # Reset the buffer to the beginning
@@ -618,7 +617,6 @@ class scanAbstract(metaclass=abc.ABCMeta):
         Useful when the user wants to switch from the raw parameter names to useful names.
         Alternatively scan labels can be manually set.
         """
-        pass
 
     def __getitem__(self, key: str | dtype) -> npt.NDArray:
         """
@@ -683,7 +681,6 @@ class parsedScanAbstract(scanAbstract):
         self._available_channels: list[dtype] = []
         """A list of available dtype channels that have been loaded from the parser.
         Populated when loading data from the parser. See `_base.parserBase.to_scan()` for more details."""
-        return
 
     @override
     def __getitem__(self, key: str | dtype) -> npt.NDArray:
@@ -781,12 +778,10 @@ class parsedScanAbstract(scanAbstract):
             self._mtime = parser.mtime
             self._ctime = parser.ctime
             self._parser_class = parser.__class__
-        return
 
     @parser.deleter
     def parser(self) -> None:
         self._parser = None
-        return
 
     @property
     def parser_class(self) -> type[parserBase]:
@@ -871,14 +866,15 @@ class parsedScanAbstract(scanAbstract):
                 )
             # Check if the label is the x_label.
             x_label = self.x_label
-            if x_label is not None and x_label == label:
-                raise ValueError(
-                    f"Requested label '{label}' corresponds to x_label, not y_labels."
+            if (
+                x_label is not None
+                and x_label == label
+                or x_label is not None
+                and (
+                    x_label in parser_cls.RELABELS
+                    and label in parser_cls.RELABELS
+                    and parser_cls.RELABELS[x_label] == parser_cls.RELABELS[label]
                 )
-            elif x_label is not None and (
-                x_label in parser_cls.RELABELS
-                and label in parser_cls.RELABELS
-                and parser_cls.RELABELS[x_label] == parser_cls.RELABELS[label]
             ):
                 raise ValueError(
                     f"Requested label '{label}' corresponds to x_label, not y_labels."
@@ -1040,7 +1036,6 @@ class scanSimple(scanAbstract):
             self._y_units = y_units.copy()
         else:
             self._y_units = None
-        return
 
     def reload_labels_from_parser(self) -> None:
         """
@@ -1049,7 +1044,7 @@ class scanSimple(scanAbstract):
         This method is not applicable for scanSimple as it does not use a parser object.
         It is included to satisfy the abstract base class interface.
         """
-        return None
+        return
 
 
 class scanBase(parsedScanAbstract):
@@ -1168,4 +1163,3 @@ class scanBase(parsedScanAbstract):
         parser.to_scan(
             load_all_columns=self._all_columns_loaded, scan_obj=None, only_labels=True
         )
-        return
