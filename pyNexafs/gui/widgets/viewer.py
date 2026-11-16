@@ -1,25 +1,24 @@
-from PyQt6.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
-    QLabel,
-    QListWidget,
-    QSplitter,
-)
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication
 import sys
+
 import matplotlib
 import matplotlib.axes
 import matplotlib.figure
 
+# from pyNexafs.gui.widgets.normaliser import NavTBQT_Norm, normaliserSettings
+import numpy as np
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import (
+    QApplication,
+    QLabel,
+    QListWidget,
+    QSplitter,
+    QVBoxLayout,
+    QWidget,
+)
+
+from pyNexafs.gui.widgets.graphing.matplotlib.graphs import FigureCanvas, NavTBQT
 from pyNexafs.nexafs.scan import scanAbstract
 from pyNexafs.parsers import parserBase
-from pyNexafs.gui.widgets.graphing.matplotlib.graphs import FigureCanvas, NavTBQT
-
-# from pyNexafs.gui.widgets.normaliser import NavTBQT_Norm, normaliserSettings
-
-import numpy as np
-from typing import Type
 
 
 class nexafsViewer(QWidget):
@@ -332,9 +331,9 @@ class nexafsViewer(QWidget):
 class normalisingGraph(QWidget):
     def __init__(
         self,
-        graph_scans: list[Type[scanAbstract | parserBase]] = None,
+        graph_scans: list[type[scanAbstract | parserBase]] = None,
         dataseries_selection: list[str] = [],
-        background_fixed_scans: list[Type[scanAbstract]] = [],
+        background_fixed_scans: list[type[scanAbstract]] = [],
         # norm_settings: normaliserSettings = None,
         parent=None,
     ):
@@ -358,11 +357,11 @@ class normalisingGraph(QWidget):
         # self.norm_settings = norm_settings
 
     @property
-    def graph_scans(self) -> list[Type[scanAbstract | parserBase]]:
+    def graph_scans(self) -> list[type[scanAbstract | parserBase]]:
         return self._toolbar.graph_scans.copy()
 
     @graph_scans.setter
-    def graph_scans(self, scans: list[Type[scanAbstract | parserBase]]):
+    def graph_scans(self, scans: list[type[scanAbstract | parserBase]]):
         self.toolbar.graph_scans = scans.copy() if scans is not None else None
 
     @property
@@ -376,11 +375,11 @@ class normalisingGraph(QWidget):
         )
 
     @property
-    def background_fixed_scans(self) -> list[Type[scanAbstract | parserBase]]:
+    def background_fixed_scans(self) -> list[type[scanAbstract | parserBase]]:
         return self._toolbar.background_fixed_scans.copy()
 
     @background_fixed_scans.setter
-    def background_fixed_scans(self, scans: list[Type[scanAbstract | parserBase]]):
+    def background_fixed_scans(self, scans: list[type[scanAbstract | parserBase]]):
         self.toolbar.background_fixed_scans = (
             scans.copy() if scans is not None else None
         )

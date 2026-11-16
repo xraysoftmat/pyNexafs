@@ -3,8 +3,8 @@ Definitions of NEXAFS data types, to allow attribute access on nexafs `scan` obj
 """
 
 from enum import StrEnum
-from typing import Any, TypedDict
-from typing_extensions import NotRequired
+from typing import Any, NotRequired, TypedDict
+
 import numpy.typing as npt
 
 
